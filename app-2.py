@@ -15,7 +15,9 @@ app = Flask(__name__)
 slack_token = os.environ['SLACK_BOT_TOKEN']  # Store your Slack Bot Token in environment variable
 client = WebClient(token=slack_token)
 formatted_messages = []
-
+ACCESS_KEY=os.environ['ACCESS_KEY']
+SECRET_KEY=os.environ['SECRET_KEY']
+SESSION_TOKEN=os.environ['SESSION_TOKEN']
 
 @app.route('/slack/events', methods=['POST'])
 def handle_slack_events():
