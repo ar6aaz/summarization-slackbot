@@ -231,10 +231,9 @@ def summarize():
     summary = summarize_thread(channel_id, thread_ts)
     page_title = f"Summary for Thread {thread_ts}"
 
-    # page_url = create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password)
-    # print(f"Confluence page URL: {page_url}")
-    # return jsonify({'summary': summary,'\nHere is the confluence runbook: 'page_url})
-    return jsonify({'summary': summary})
+    page_url = create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password)
+    print(f"Confluence page URL: {page_url}")
+    return jsonify({'summary': summary,'\nHere is the confluence runbook created for the issue: 'page_url})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000)
