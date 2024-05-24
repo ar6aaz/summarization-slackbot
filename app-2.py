@@ -223,16 +223,17 @@ def summarize():
     data = request.json
     channel_id = data.get('channel_id')
     thread_ts = data.get('thread_ts')
+    print('data: ', data)
 
     if not channel_id or not thread_ts:
         return jsonify({'error': 'Missing channel_id or thread_ts'}), 400
 
     summary = summarize_thread(channel_id, thread_ts)
-    page_title = f"Summary for Thread"
+    page_title = f"Summary for Thread {thread_ts}"
 
-    page_url = create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password)
-    print(f"Confluence page URL: {page_url}")
-
+    # page_url = create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password)
+    # print(f"Confluence page URL: {page_url}")
+    # return jsonify({'summary': summary,'\nHere is the confluence runbook: 'page_url})
     return jsonify({'summary': summary})
 
 if __name__ == '__main__':
