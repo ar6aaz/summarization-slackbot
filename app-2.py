@@ -9,6 +9,7 @@ import json
 import requests
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
+from atlassian import Confluence
 
 app = Flask(__name__)
 # Initialize Slack client
@@ -18,6 +19,30 @@ formatted_messages = []
 ACCESS_KEY=os.environ['ACCESS_KEY']
 SECRET_KEY=os.environ['SECRET_KEY']
 SESSION_TOKEN=os.environ['SESSION_TOKEN']
+confluence_url = os.environ['CONFLUENCE_URL']
+confluence_user = os.environ['CONFLUENCE_USER']
+confluence_password = os.environ['CONFLUENCE_PASSWORD']
+space_key = os.environ['CONFLUENCE_SPACE_KEY']
+
+def create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password):
+    confluence = Confluence(
+        url=confluence_url,
+        username=confluence_user,
+        password=confluence_password
+    )
+
+    parent_page_id = None  # Set this to the ID of the parent page if needed
+    body = summary
+
+    new_page = confluence.create_page(
+        space=space_key,
+        title=page_title,
+        body=body,
+        parent_id=parent_page_id
+    )
+
+    print(f"New page created: {new_page['_links']['tinyui']}")
+    return new_page['_links']['tinyui']
 
 @app.route('/slack/events', methods=['POST'])
 def handle_slack_events():
@@ -203,6 +228,11 @@ def summarize():
         return jsonify({'error': 'Missing channel_id or thread_ts'}), 400
 
     summary = summarize_thread(channel_id, thread_ts)
+    page_title = f"Summary for Thread"
+
+    page_url = create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password)
+    print(f"Confluence page URL: {page_url}")
+
     return jsonify({'summary': summary})
 
 if __name__ == '__main__':
