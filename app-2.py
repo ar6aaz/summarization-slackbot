@@ -53,7 +53,7 @@ def handle_slack_events():
         if response.status_code == 200:
             summary = response.json()['summary']
             # Post the summary back to the Slack channel (optional)
-            post_message_to_slack(channel_id, summary)
+            post_message_to_slack(channel_id, summary, thread_ts)
         else:
             print(f'Error: {response.text}')
 
@@ -64,11 +64,12 @@ def verify_slack_request(request):
     # Implement your request verification logic here
     return True
 
-def post_message_to_slack(channel_id, message):
+def post_message_to_slack(channel_id, message, thread_ts):
     try:
         response = client.chat_postMessage(
             channel=channel_id,
-            text=message
+            text=message,
+            thread_ts=thread_ts
         )
         print(f"Message posted successfully: {response['ts']}")
     except SlackApiError as e:
