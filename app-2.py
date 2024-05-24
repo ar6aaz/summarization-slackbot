@@ -209,6 +209,7 @@ def summarize_thread(channel_id, thread_ts):
 
     # Process and print the response
     result = json.loads(response.get("body").read()).get("content", [])[0].get("text", "")
+    print(f"result: ", result)
     return result
 
 # Example usage
@@ -230,7 +231,7 @@ def summarize():
 
     summary = summarize_thread(channel_id, thread_ts)
     page_title = f"Summary for Thread {thread_ts}"
-    print("page_title: ", page_title)
+    print(f"page_title: ", page_title)
 
     page_url = create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password)
     print(f"Confluence page URL: {page_url}")
