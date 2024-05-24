@@ -181,13 +181,9 @@ def summarize_thread(channel_id, thread_ts):
     for message in formatted_messages:
         if '[Image]' in message:
             image_file_id = message.split('[Image]')[1].strip()
-            print(f"Fetching image with file ID: {image_file_id}")
             try:
-                print("hellloooooooooo")
                 file_info = client.files_info(file=image_file_id)
-                print("this is file info")
                 public_url = client.files_sharedPublicURL(file=image_file_id)
-                print("Public URL: {public_url}")
                 image_data = httpx.get(public_url['file']['permalink_public']).content
                 image_data = base64.b64encode(image_data).decode('utf-8')
                 image_media_type = file_info['file']['mimetype']
@@ -231,11 +227,9 @@ def summarize():
 
     summary = summarize_thread(channel_id, thread_ts)
     page_title = f"Summary for Thread {thread_ts}"
-    print(f"page_title: ", page_title)
 
     page_url = create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password)
-    print(f"Confluence page URL: {page_url}")
-    confluence_message = summary + 'Here is the confluence runbook created for the issue: ' + page_url
+    # confluence_message = summary + 'Here is the confluence runbook created for the issue: ' + page_url
     return jsonify({'summary': summary})
 
 if __name__ == '__main__':
