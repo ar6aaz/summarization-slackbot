@@ -233,8 +233,8 @@ def summarize():
 
     page_url = create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password)
     print(f"Confluence page URL: {page_url}")
-    confluence_message = 'Here is the confluence runbook created for the issue: ' + page_url
-    return jsonify({'summary': summary, 'confluence_message': confluence_message})
+    confluence_message = summary + 'Here is the confluence runbook created for the issue: ' + page_url
+    return jsonify({'confluence_message': confluence_message})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000)
