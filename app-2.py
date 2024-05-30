@@ -226,7 +226,7 @@ def summarize():
         return jsonify({'error': 'Missing channel_id or thread_ts'}), 400
 
     summary = summarize_thread(channel_id, thread_ts)
-    page_title = f"Summary for Thread {thread_ts}"
+    page_title = f"Summary for Thread {thread_ts}: "
 
     page_url = create_confluence_page(summary, page_title, space_key, confluence_url, confluence_user, confluence_password)
     # confluence_message = summary + 'Here is the confluence runbook created for the issue: ' + page_url
